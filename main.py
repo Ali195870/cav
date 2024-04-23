@@ -120,7 +120,7 @@ class Bot(BaseBot):
     async def on_emote(self, user: User ,emote_id : str , receiver: User | None )-> None:
       print (f"{user.username} , {emote_id}")
 
-    async def on_user_join(self, user: User) -> None:
+    async def on_user_join(self, user: User, position: Position | AnchorPosition) -> None:
 
      try:
 
