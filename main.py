@@ -113,8 +113,8 @@ class Bot(BaseBot):
 
         self.highrise.tg.create_task(self.highrise.walk_to(Position(17, 0.0,3.5, facing='FrontRight')))
         self.load_temporary_vips()
-
-        await self.highrise.chat(f"hi guys im here ")
+        await asyncio.sleep(6)
+        await self.highrise.chat(f"Deployed ")
       except Exception as e:
           print(f"An exception occured: {e}")  
     async def on_emote(self, user: User ,emote_id : str , receiver: User | None )-> None:
