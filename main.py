@@ -354,7 +354,7 @@ class Bot(BaseBot):
               else: 
                 await  self.highrise.send_whisper(user.id, f"Only the @x_softangel_x can use tip!")
 
-         if message.lower().lstrip().startswith(("-emotes", "!emotes")):
+         if message.lower().lstrip().startswith(("-emote", "!emote")):
                 await self.highrise.send_whisper(user.id, "\n• Emote can be used either by EMOTE NAME  or by NUMBERS")
                 await self.highrise.send_whisper(user.id, "\n• For loops say -loop or !loop")         
          if message.lower().lstrip().startswith(("!loop","-loop")):
@@ -362,7 +362,7 @@ class Bot(BaseBot):
           await self.highrise.send_whisper(user.id,"I have sent you details in private chat.")  
 
          if message.lower().lstrip().startswith(("-list", "!list")):
-                await self.highrise.chat("\\commands you can use:\n• !feedback or -feedback \n• !teleport or -teleport \n• -buy or !buy for \n 🎫VIP Tickets🎫 ")
+                await self.highrise.chat("\\commands you can use:\n• !feedback or -feedback \n• !teleport or -teleport\n• !loop or -loop \n• !emote or -emote\n• -buy or !buy for \n 🎫VIP Tickets🎫 ")
                 await self.highrise.chat(f"\n ____________________________\n• !mod or -mod ( only for mods )")
         
          if message.lower().lstrip().startswith(("-buy" , "!buy")):
