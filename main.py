@@ -528,6 +528,7 @@ class Bot(BaseBot):
      except ValueError:
         pass
     async def on_whisper(self, user: User, message: str ) -> None:
+     try:
         if message.lower().startswith("-announce "):
            if user.username.lower() in self.moderators:
              parts = message.split()
@@ -721,7 +722,8 @@ class Bot(BaseBot):
             await self.highrise.walk_to(Position(2.5,0.25,4.5,"FrontRight"))
 
   
-  
+     except Exception as e:
+             print(f"An exception occured: {e}")
               
     async def on_tip(self, sender: User, receiver: User, tip: CurrencyItem) -> None:
         try:
