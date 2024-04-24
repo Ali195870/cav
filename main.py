@@ -273,67 +273,7 @@ class Bot(BaseBot):
          user_input = None
          print(f"{user.username} said: {message}")     
          
-         if message.lower().lstrip().startswith(("-buy" , "!buy")):
-             await self.highrise.chat(f"\n  vip = 500 per month 🎫 \nTip 50 to bot you will be aceessed to use tele command ")
-        
-     
-         if message.lower().lstrip().startswith(("-teleport", "!teleport")):
-                    await self.highrise.chat(f"\n • Teleports\n ____________________________\nGround floor : g  \nvip : (vip only), make sure you have 🎫VIP Tickets 🎫 \n• type -buy or !buy for details ")
-         if message.lower().lstrip().startswith(("!rules", "-rules")):
-           await self.highrise.chat(f"\n\n        RULES\n ____________________________\n 1. NO UNDERAGE \n 2. No advertising\n 3. No hate speech \n 4. No begging (those trash will be immediately banned 🚫) \n 5. No spamming ")
-         if message.lower().lstrip().startswith(("-feedback", "!feedback")):
-                    await self.highrise.send_whisper(user.id, "• [ Submit Feedback ]\\Thank you for joining our room! \n We value your feedback,")
-                    await self.highrise.send_whisper(user.id,"Please share your feedback/suggestions with @x_softangel_x to improve our environment. Your contributions are valuable and will help us improve.")  
-
-         if user.username.lower() in self.moderators:
-            if message.lower().lstrip().startswith(("-mod","!mod")):
-               await self.highrise.send_whisper(user.id,"\n  \n•Moderating :\n ____________________________\n !kick @ \n !ban @ \n !mute @ \n !unmute @ ")
-               await self.highrise.send_whisper(user.id,"\n  \n•Teleporting :\n ____________________________\n!vip @\n!console @\n!pc  @\n!bar @\n!g @\nReact : thumb to summon.")
-            
-             
-         if message.lstrip().startswith(("!vip","!pc","!console","!bar","!g")):
-            response = await self.highrise.get_room_users()
-            users = [content[0] for content in response.content]
-            usernames = [user.username.lower() for user in users]
-            parts = message[1:].split()
-            args = parts[1:]
-
-            if len(args) < 1:
-                await self.highrise.send_whisper(user.id, f"Kullanım: !{parçalar[0]} <@Alionardo_>")
-                return
-            elif args[0][0] != "@":
-                await self.highrise.send_whisper(user.id, "Invalid user format. Please use '@username'.")
-                return
-            elif args[0][1:].lower() not in usernames:
-                await self.highrise.send_whisper(user.id, f"{args[0][1:]} is not in the room.")
-                return
-
-            user_id = next((u.id for u in users if u.username.lower() == args[0][1:].lower()), None)
-            user_name = next((u.username.lower() for u in users if u.username.lower() == args[0][1:].lower()), None)
-            if not user_id:
-                await self.highrise.send_whisper(user.id, f"User {args[0][1:]} not found")
-                return                     
-            try:
-                if message.lower().startswith("!vip"):   
-                  if user.username.lower() in self.moderators:
-                    await self.highrise.teleport(user_id, Position(18.5, 18.75,0.5))
-                if message.lower().startswith("!console"):   
-                  if user.username.lower() in self.moderators:
-                    await self.highrise.teleport(user_id, Position(15.5, 15.25,4.5))
-                if message.lower().startswith("!pc"):   
-                  if user.username.lower() in self.moderators:
-                    await self.highrise.teleport(user_id, Position(15,9.5,5.5))
-                if message.lower().startswith("!g"):   
-                  if user.username.lower() in self.moderators:
-                     await self.highrise.teleport(user_id, Position(16,0,11.5))
-                if message.lower().startswith("!bar"):   
-                  if user.username.lower() in self.moderators:
-                    await self.highrise.teleport(user_id, Position(17, 0.0,3.5))
-               
-              
-            except Exception as e:
-             print(f"An exception occurred[Due To {parts[0][1:]}]: {e}")
-
+         
           
          if message.startswith("!time"):
             parts = message.split()
@@ -662,7 +602,67 @@ class Bot(BaseBot):
         if message.lower().lstrip().startswith(("-list", "!list")):
                 await self.highrise.chat("\\commands you can use:\n• !feedback or -feedback \n• !teleport or -teleport\n• !loop or -loop \n• !emote or -emote\n• -buy or !buy for \n 🎫VIP Tickets🎫 ")
                 await self.highrise.chat(f"\n ____________________________\n• !mod or -mod ( only for mods )")
+        if message.lower().lstrip().startswith(("-buy" , "!buy")):
+             await self.highrise.chat(f"\n  vip = 500 per month 🎫 \nTip 50 to bot you will be aceessed to use tele command ")
         
+     
+         if message.lower().lstrip().startswith(("-teleport", "!teleport")):
+                    await self.highrise.chat(f"\n • Teleports\n ____________________________\nGround floor : g  \nvip : (vip only), make sure you have 🎫VIP Tickets 🎫 \n• type -buy or !buy for details ")
+         if message.lower().lstrip().startswith(("!rules", "-rules")):
+           await self.highrise.chat(f"\n\n        RULES\n ____________________________\n 1. NO UNDERAGE \n 2. No advertising\n 3. No hate speech \n 4. No begging (those trash will be immediately banned 🚫) \n 5. No spamming ")
+         if message.lower().lstrip().startswith(("-feedback", "!feedback")):
+                    await self.highrise.send_whisper(user.id, "• [ Submit Feedback ]\\Thank you for joining our room! \n We value your feedback,")
+                    await self.highrise.send_whisper(user.id,"Please share your feedback/suggestions with @x_softangel_x to improve our environment. Your contributions are valuable and will help us improve.")  
+
+         if user.username.lower() in self.moderators:
+            if message.lower().lstrip().startswith(("-mod","!mod")):
+               await self.highrise.send_whisper(user.id,"\n  \n•Moderating :\n ____________________________\n !kick @ \n !ban @ \n !mute @ \n !unmute @ ")
+               await self.highrise.send_whisper(user.id,"\n  \n•Teleporting :\n ____________________________\n!vip @\n!console @\n!pc  @\n!bar @\n!g @\nReact : thumb to summon.")
+            
+             
+         if message.lstrip().startswith(("!vip","!pc","!console","!bar","!g")):
+            response = await self.highrise.get_room_users()
+            users = [content[0] for content in response.content]
+            usernames = [user.username.lower() for user in users]
+            parts = message[1:].split()
+            args = parts[1:]
+
+            if len(args) < 1:
+                await self.highrise.send_whisper(user.id, f"Kullanım: !{parçalar[0]} <@Alionardo_>")
+                return
+            elif args[0][0] != "@":
+                await self.highrise.send_whisper(user.id, "Invalid user format. Please use '@username'.")
+                return
+            elif args[0][1:].lower() not in usernames:
+                await self.highrise.send_whisper(user.id, f"{args[0][1:]} is not in the room.")
+                return
+
+            user_id = next((u.id for u in users if u.username.lower() == args[0][1:].lower()), None)
+            user_name = next((u.username.lower() for u in users if u.username.lower() == args[0][1:].lower()), None)
+            if not user_id:
+                await self.highrise.send_whisper(user.id, f"User {args[0][1:]} not found")
+                return                     
+            try:
+                if message.lower().startswith("!vip"):   
+                  if user.username.lower() in self.moderators:
+                    await self.highrise.teleport(user_id, Position(18.5, 18.75,0.5))
+                if message.lower().startswith("!console"):   
+                  if user.username.lower() in self.moderators:
+                    await self.highrise.teleport(user_id, Position(15.5, 15.25,4.5))
+                if message.lower().startswith("!pc"):   
+                  if user.username.lower() in self.moderators:
+                    await self.highrise.teleport(user_id, Position(15,9.5,5.5))
+                if message.lower().startswith("!g"):   
+                  if user.username.lower() in self.moderators:
+                     await self.highrise.teleport(user_id, Position(16,0,11.5))
+                if message.lower().startswith("!bar"):   
+                  if user.username.lower() in self.moderators:
+                    await self.highrise.teleport(user_id, Position(17, 0.0,3.5))
+               
+              
+            except Exception as e:
+             print(f"An exception occurred[Due To {parts[0][1:]}]: {e}")
+
         if message == "here":
             if user.username.lower() in self.moderators:
                 response = await self.highrise.get_room_users()
