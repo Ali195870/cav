@@ -275,72 +275,7 @@ class Bot(BaseBot):
          
          
           
-         if message.startswith("!time"):
-            parts = message.split()
-            if len(parts) == 2:
-                target_mention = parts[1]
-
-                # Remove the "@" symbol if present
-                target_user = target_mention.lstrip('@')
-
-                # Check if the target user has temporary VIP status
-                remaining_time = self.remaining_time(target_user.lower())
-                await self.highrise.send_whisper(user.id, f"Remaining time for {target_mention}'s temporary VIP status: {remaining_time}")
-            else:
-                await self.highrise.send_whisper(user.id, "Usage: !time @username")
-
-
-       
-         if message.lower().startswith('-vip') :
-            if user.username.lower() in self.moderators or user.username.lower() in self.membership :    
-              await self.highrise.teleport(f"{user.id}", Position(18.5, 18.75,0.5))
-            else:
-             await self.highrise.send_whisper((user.id)," this is a privet place for VIPs , uou can use it by purchaseing VIP Ticket type -buy")
-         if message.lower().startswith('-console') :
-           if user.username.lower() in self.moderators:    
-             await self.highrise.teleport(f"{user.id}", Position(15.5, 15.25,4.5))
-         if message.lower().startswith('-pc') :
-            if user.username.lower() in self.moderators:    
-              await self.highrise.teleport(f"{user.id}", Position(15,9.5,5.5))
-         if message.lower().startswith('-bar') :
-            if user.username.lower() in self.moderators:    
-              await self.highrise.teleport(f"{user.id}", Position(17,0,3.5))
-        
-         if message.startswith('-g'):
-             await self.highrise.teleport(f"{user.id}", Position(12.5,0.25,13.5))
-           
-         if message.lower().startswith("loop"):
-           parts = message.split()
-           E = parts[1]
-           E = int(E)
-           emote_text, emote_time = await self.get_emote_E(E)
-           emote_time -= 1
-           user_id = user.id  
-           if user.id in self.continuous_emote_tasks and not self.continuous_emote_tasks[user.id].cancelled():
-              await self.stop_continuous_emote(user.id)
-              task = asyncio.create_task(self.send_continuous_emote(emote_text,user_id,emote_time))
-              self.continuous_emote_tasks[user.id] = task
-           else:
-              task = asyncio.create_task(self.send_continuous_emote(emote_text,user_id,emote_time))
-              self.continuous_emote_tasks[user.id] = task  
-
-         elif message.lower().startswith("stop"):
-            if user.id in self.continuous_emote_tasks and not self.continuous_emote_tasks[user.id].cancelled():
-                await self.stop_continuous_emote(user.id)
-                await self.highrise.chat("Continuous emote has been stopped.")
-            else:
-                await self.highrise.chat("You don't have an active loop_emote.")
-         elif message.lower().startswith("users"):
-            room_users = (await self.highrise.get_room_users()).content
-            await self.highrise.chat(f"There are {len(room_users)} users in the room")
-
-         if  message.isdigit() and 1 <= int(message) <= 91:
-              parts = message.split()
-              E = parts[0]
-              E = int(E)
-              emote_text, emote_time = await self.get_emote_E(E)    
-              tasks = [asyncio.create_task(self.highrise.send_emote(emote_text, user.id))]
-              await asyncio.wait(tasks)
+         
          if message.startswith("/e1"):
                  await self.highrise.set_outfit(outfit=[
           Item(type='clothing', 
@@ -662,7 +597,72 @@ class Bot(BaseBot):
               
             except Exception as e:
              print(f"An exception occurred[Due To {parts[0][1:]}]: {e}")
+        if message.startswith("!time"):
+            parts = message.split()
+            if len(parts) == 2:
+                target_mention = parts[1]
 
+                # Remove the "@" symbol if present
+                target_user = target_mention.lstrip('@')
+
+                # Check if the target user has temporary VIP status
+                remaining_time = self.remaining_time(target_user.lower())
+                await self.highrise.send_whisper(user.id, f"Remaining time for {target_mention}'s temporary VIP status: {remaining_time}")
+            else:
+                await self.highrise.send_whisper(user.id, "Usage: !time @username")
+
+
+       
+        if message.lower().startswith('-vip') :
+            if user.username.lower() in self.moderators or user.username.lower() in self.membership :    
+              await self.highrise.teleport(f"{user.id}", Position(18.5, 18.75,0.5))
+            else:
+             await self.highrise.send_whisper((user.id)," this is a privet place for VIPs , uou can use it by purchaseing VIP Ticket type -buy")
+        if message.lower().startswith('-console') :
+           if user.username.lower() in self.moderators:    
+             await self.highrise.teleport(f"{user.id}", Position(15.5, 15.25,4.5))
+        if message.lower().startswith('-pc') :
+            if user.username.lower() in self.moderators:    
+              await self.highrise.teleport(f"{user.id}", Position(15,9.5,5.5))
+        if message.lower().startswith('-bar') :
+            if user.username.lower() in self.moderators:    
+              await self.highrise.teleport(f"{user.id}", Position(17,0,3.5))
+        
+        if message.startswith('-g'):
+             await self.highrise.teleport(f"{user.id}", Position(12.5,0.25,13.5))
+           
+        if message.lower().startswith("loop"):
+           parts = message.split()
+           E = parts[1]
+           E = int(E)
+           emote_text, emote_time = await self.get_emote_E(E)
+           emote_time -= 1
+           user_id = user.id  
+           if user.id in self.continuous_emote_tasks and not self.continuous_emote_tasks[user.id].cancelled():
+              await self.stop_continuous_emote(user.id)
+              task = asyncio.create_task(self.send_continuous_emote(emote_text,user_id,emote_time))
+              self.continuous_emote_tasks[user.id] = task
+           else:
+              task = asyncio.create_task(self.send_continuous_emote(emote_text,user_id,emote_time))
+              self.continuous_emote_tasks[user.id] = task  
+
+        elif message.lower().startswith("stop"):
+            if user.id in self.continuous_emote_tasks and not self.continuous_emote_tasks[user.id].cancelled():
+                await self.stop_continuous_emote(user.id)
+                await self.highrise.chat("Continuous emote has been stopped.")
+            else:
+                await self.highrise.chat("You don't have an active loop_emote.")
+        elif message.lower().startswith("users"):
+            room_users = (await self.highrise.get_room_users()).content
+            await self.highrise.chat(f"There are {len(room_users)} users in the room")
+
+        if  message.isdigit() and 1 <= int(message) <= 91:
+              parts = message.split()
+              E = parts[0]
+              E = int(E)
+              emote_text, emote_time = await self.get_emote_E(E)    
+              tasks = [asyncio.create_task(self.highrise.send_emote(emote_text, user.id))]
+              await asyncio.wait(tasks)
         if message == "here":
             if user.username.lower() in self.moderators:
                 response = await self.highrise.get_room_users()
