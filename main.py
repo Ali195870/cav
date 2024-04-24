@@ -165,7 +165,7 @@ class Bot(BaseBot):
 
      try:
 
-        await self.highrise.send_whisper(user.id,f"\n ____________________________\nHello {user.username}\nWelcome to what gonna be your lovely place\n        💜FIND A DUO💜\n• !list or -list \nto veiw the functions \nfor bots dm @Alionardo_ .\n ____________________________\n")
+        await self.highrise.send_whisper(user.id,f"\n ____________________________\nHello {user.username}\nWelcome to 💜FIND A DUO💜\n• !list or -list \nto veiw the functions.\n ____________________________\n")
         await self.highrise.send_emote('emote-salute')
      
      except Exception as e:
