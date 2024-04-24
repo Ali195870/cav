@@ -677,7 +677,7 @@ class Bot(BaseBot):
 
                             pass
        
-       if message.startswith("/say"):
+        if message.startswith("/say"):
             if user.username.lower() in self.moderators:
                 text = message.replace("/say", "").strip()
                 await self.highrise.chat(text)
@@ -685,7 +685,7 @@ class Bot(BaseBot):
    
          
 
-       elif message.startswith("/come"):
+        elif message.startswith("/come"):
             if user.username.lower() in self.moderators:
                 response = await self.highrise.get_room_users()
                 your_pos = None
@@ -700,7 +700,7 @@ class Bot(BaseBot):
                 await self.highrise.chat(f"@{user.username} I'm coming ..")
                 await self.highrise.walk_to(your_pos)
 
-      elif message.lower().startswith("/follow"):
+       elif message.lower().startswith("/follow"):
          
             target_username = message.split("@")[1].strip()
 
@@ -715,7 +715,7 @@ class Bot(BaseBot):
                 await self.highrise.chat(f"hey {target_username}.")
             
                 await self.follow_user(target_username)
-      elif message.lower() == "stop following":
+       elif message.lower() == "stop following":
             self.following_username = None
           
             await self.highrise.walk_to(Position(2.5,0.25,4.5,"FrontRight"))
