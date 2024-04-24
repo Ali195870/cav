@@ -17,7 +17,7 @@ from typing import Any, Dict, Union
 from highrise.__main__ import *
 import asyncio, random
 from emotes import Emotes
-
+from emotes import Dance_Floor
 
 
 class BotDefinition:
@@ -53,10 +53,24 @@ class Bot(BaseBot):
         self.maze_players = {}
         self.user_points = {}  # Dictionary to store user points
         self.Emotes = Emotes
-
+ 
         #conversation id var
         self.convo_id_registry = []
+        #dance floor position
+        min_x = 7.5
+        max_x = 11.5
+        min_y = 0.0
+        max_y = 1.0
+        min_z = 8.5
+        max_z = 12.5
 
+        self.dance_floor_pos = [(min_x, max_x, min_y, max_y, min_z, max_z)]
+
+        #dancer variable
+        self.dancer = []
+
+        #dance floor emotes var
+        self.emotesdf = Dance_Floor
       
     def load_temporary_vips(self):
         try:
@@ -104,6 +118,33 @@ class Bot(BaseBot):
               await self.highrise.chat(user_input)
               await asyncio.sleep(60)
               await self.highrise.send_emote('emote-hello')
+    async def dance_floor(self):
+
+        while True:
+
+            try:
+                if self.dance_floor_pos and self.dancer:
+                    ran = random.randint(1, 73)
+                    emote_text, emote_time = await self.get_emote_df(ran)
+                    emote_time -= 1
+
+                    tasks = [asyncio.create_task(self.highrise.send_emote(emote_text, user_id)) for user_id in self.dancer]
+
+                    await asyncio.wait(tasks)
+
+                    await asyncio.sleep(emote_time)
+
+                await asyncio.sleep(1)
+
+            except Exception as e:
+                print(f"{e}")
+    async def get_emote_df(self, target) -> None:
+
+        try:
+            emote_info = self.emotesdf.get(target)
+            return emote_info      
+        except ValueError:
+            pass
     async def on_start(self, session_metadata: SessionMetadata) -> None:
       try:
        
@@ -704,16 +745,30 @@ class Bot(BaseBot):
  
 
     async def on_user_move(self, user: User, pos: Position | AnchorPosition) -> None:
-
-
+        if user:
         print(f"{user.username}: {pos}")
 
-   
-          
-  
-    
+        if self.dance_floor_pos:
 
-   
+            if isinstance(pos, Position):
+
+                for dance_floor_info in self.dance_floor_pos:
+
+                    if (
+                        dance_floor_info[0] <= pos.x <= dance_floor_info[1] and
+                        dance_floor_info[2] <= pos.y <= dance_floor_info[3] and
+                        dance_floor_info[4] <= pos.z <= dance_floor_info[5]
+                    ):
+
+                        if user.id not in self.dancer:
+                            self.dancer.append(user.id)
+
+                        return
+
+            # If not in any dance floor area
+            if user.id in self.dancer:
+                self.dancer.remove(user.id)
+
 
 
 
