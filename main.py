@@ -456,7 +456,14 @@ class Bot(BaseBot):
                 user_input =  message[len("-announce "):]
                 await self.highrise.chat( "Alright i will loop with with intervals of 60 seconds")
                 await self.announce(user_input,message)
-                
+        if  message.lower().startswith("wallet"):
+            if user.username.lower() in self.moderators :
+
+                  wallet = (await self.highrise.get_wallet()).content
+                  await self.highrise.send_whisper(user.id, f"The bot wallet contains {wallet[0].amount} {wallet[0].type}")
+
+            else: 
+                await  self.highrise.send_whisper(user.id, f"Only Moderators Can View the Wallet")       
         if message.startswith("❤️ all"):
            if user.username.lower() in self.moderators:
              roomUsers = (await self.highrise.get_room_users()).content
