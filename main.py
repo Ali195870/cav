@@ -564,7 +564,7 @@ class Bot(BaseBot):
             else:
                 await self.highrise.send_whisper(user.id, "You can't use this command.")
 
-       elif message.startswith("!mute"):
+        elif message.startswith("!mute"):
             if user.username.lower() in self.moderators:
                 parts = message.split()
                 if len(parts) < 2:
@@ -587,7 +587,7 @@ class Bot(BaseBot):
             else:
                 await self.highrise.send_whisper(user.id, "You can't use this command.")
 
-       elif message.startswith("!unmute"):
+        elif message.startswith("!unmute"):
             if user.username.lower() in self.moderators:
                 parts = message.split()
                 if len(parts) < 2:
@@ -610,7 +610,7 @@ class Bot(BaseBot):
             else:
                 await self.highrise.send_whisper(user.id, "You can't use this command.")
 
-       elif message.startswith("!ban"):
+        elif message.startswith("!ban"):
             if user.username.lower() in self.moderators:
                 parts = message.split()
                 if len(parts) < 2:
@@ -635,7 +635,7 @@ class Bot(BaseBot):
 
         
         
-       if message == "!tip5":
+        if message == "!tip5":
               if user.username == "x_softangel_x" :
                 roomUsers = (await self.highrise.get_room_users()).content
                 for roomUser, _ in roomUsers:
@@ -643,7 +643,7 @@ class Bot(BaseBot):
               else: 
                 await  self.highrise.send_whisper(user.id, f"Only @x_softangel_x can use tip!")
 
-       if message == "!tip1":
+        if message == "!tip1":
               if user.username == "x_softangel_x":
                 roomUsers = (await self.highrise.get_room_users()).content
                 for roomUser, _ in roomUsers:
@@ -651,7 +651,7 @@ class Bot(BaseBot):
               else: 
                 await  self.highrise.send_whisper(user.id, f"Only the @x_softangel_x can use tip!")
 
-       if message.lower().lstrip().startswith(("-emote", "!emote")):
+        if message.lower().lstrip().startswith(("-emote", "!emote")):
                 await self.highrise.send_whisper(user.id, "\n• Emote can be used either by EMOTE NAME  or by NUMBERS")
                 await self.highrise.send_whisper(user.id, "\n• For loops say -loop or !loop")         
        if message.lower().lstrip().startswith(("!loop","-loop")):
