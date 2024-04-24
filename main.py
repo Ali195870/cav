@@ -606,21 +606,21 @@ class Bot(BaseBot):
              await self.highrise.chat(f"\n  vip = 500 per month 🎫 \nTip 50 to bot you will be aceessed to use tele command ")
         
      
-         if message.lower().lstrip().startswith(("-teleport", "!teleport")):
+        if message.lower().lstrip().startswith(("-teleport", "!teleport")):
                     await self.highrise.chat(f"\n • Teleports\n ____________________________\nGround floor : g  \nvip : (vip only), make sure you have 🎫VIP Tickets 🎫 \n• type -buy or !buy for details ")
-         if message.lower().lstrip().startswith(("!rules", "-rules")):
+        if message.lower().lstrip().startswith(("!rules", "-rules")):
            await self.highrise.chat(f"\n\n        RULES\n ____________________________\n 1. NO UNDERAGE \n 2. No advertising\n 3. No hate speech \n 4. No begging (those trash will be immediately banned 🚫) \n 5. No spamming ")
-         if message.lower().lstrip().startswith(("-feedback", "!feedback")):
+        if message.lower().lstrip().startswith(("-feedback", "!feedback")):
                     await self.highrise.send_whisper(user.id, "• [ Submit Feedback ]\\Thank you for joining our room! \n We value your feedback,")
                     await self.highrise.send_whisper(user.id,"Please share your feedback/suggestions with @x_softangel_x to improve our environment. Your contributions are valuable and will help us improve.")  
 
-         if user.username.lower() in self.moderators:
+        if user.username.lower() in self.moderators:
             if message.lower().lstrip().startswith(("-mod","!mod")):
                await self.highrise.send_whisper(user.id,"\n  \n•Moderating :\n ____________________________\n !kick @ \n !ban @ \n !mute @ \n !unmute @ ")
                await self.highrise.send_whisper(user.id,"\n  \n•Teleporting :\n ____________________________\n!vip @\n!console @\n!pc  @\n!bar @\n!g @\nReact : thumb to summon.")
             
              
-         if message.lstrip().startswith(("!vip","!pc","!console","!bar","!g")):
+        if message.lstrip().startswith(("!vip","!pc","!console","!bar","!g")):
             response = await self.highrise.get_room_users()
             users = [content[0] for content in response.content]
             usernames = [user.username.lower() for user in users]
