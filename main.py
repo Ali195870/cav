@@ -564,7 +564,7 @@ class Bot(BaseBot):
             else:
                 await self.highrise.send_whisper(user.id, "You can't use this command.")
 
-      elif message.startswith("!mute"):
+       elif message.startswith("!mute"):
             if user.username.lower() in self.moderators:
                 parts = message.split()
                 if len(parts) < 2:
@@ -610,7 +610,7 @@ class Bot(BaseBot):
             else:
                 await self.highrise.send_whisper(user.id, "You can't use this command.")
 
-      elif message.startswith("!ban"):
+       elif message.startswith("!ban"):
             if user.username.lower() in self.moderators:
                 parts = message.split()
                 if len(parts) < 2:
