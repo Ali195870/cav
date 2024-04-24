@@ -150,7 +150,7 @@ class Bot(BaseBot):
        
         Counter.bot_id = session_metadata.user_id
         print("Ali is booting ...")
-   
+        asyncio.create_task(self.dance_floor())
 
         self.highrise.tg.create_task(self.highrise.walk_to(Position(17, 0.0,3.5, facing='FrontRight')))
         self.load_temporary_vips()
@@ -181,7 +181,7 @@ class Bot(BaseBot):
          print(f"An error on user_on_join: {e}") 
       
     
-    async def teleport_user_next_to(self, target_username: str, requester_user: User):
+    async def on_user_next_leave(self, target_username: str, requester_user: User):
       room_users = await self.highrise.get_room_users()
       requester_position = None
 
@@ -268,7 +268,7 @@ class Bot(BaseBot):
         return "Not a temporary VIP."
 
 
-    async def on_chat(self, user: User, message: str) -> None:
+    async def on_whisper(self, user: User, message: str ) -> None:
       try:
          user_input = None
          print(f"{user.username} said: {message}")     
