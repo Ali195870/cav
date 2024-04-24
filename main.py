@@ -165,14 +165,14 @@ class Bot(BaseBot):
 
      try:
 
-        await self.highrise.send_whisper(user.id,f"\n ____________________________\nHello {user.username}\nWelcome to 💜FIND A DUO💜\n• !list or -list \nto veiw the functions.\n ____________________________\n")
+        await self.highrise.send_whisper(user.id,f"\n ____________________________\nHello {user.username}\nWelcome to 💜FIND A DUO💜\n• Whisper !list or -list \nto veiw the functions.\n ____________________________\n")
         await self.highrise.send_emote('emote-salute')
      
      except Exception as e:
             print(f"An error on user_on_join: {e}") 
 
 
-    async def on_user_leave(self, user: User) ->None:
+    async def on_whisper(self, user: User, message: str ) -> None:
       try:
         print(f"{user.username} has left the room")
         await self.highrise.chat(f"  {user.username} left the room")
@@ -745,7 +745,7 @@ class Bot(BaseBot):
  
 
     async def on_user_move(self, user: User, pos: Position | AnchorPosition) -> None:
-        if user:
+      if user:
         print(f"{user.username}: {pos}")
 
         if self.dance_floor_pos:
