@@ -630,13 +630,13 @@ class Bot(BaseBot):
                 await self.highrise.send_whisper(user.id, f"User {args[0][1:]} not found")
                 return                     
             try:
-                if message.lower().startswith("!vip"):   
+                if message.lower().startswith("!mod"):   
                   if user.username.lower() in self.moderators:
                     await self.highrise.teleport(user_id, Position(18.5, 18.75,0.5))
-                if message.lower().startswith("!console"):   
+                if message.lower().startswith("!vip"):   
                   if user.username.lower() in self.moderators:
                     await self.highrise.teleport(user_id, Position(15.5, 15.25,4.5))
-                if message.lower().startswith("!pc"):   
+                if message.lower().startswith("!dj"):   
                   if user.username.lower() in self.moderators:
                     await self.highrise.teleport(user_id, Position(15,9.5,5.5))
                 if message.lower().startswith("!g"):   
@@ -666,15 +666,15 @@ class Bot(BaseBot):
 
         if message.lstrip().startswith(("!prof","-prof", "!profile", "-profile")) and user.username.lower().startswith:
               await self.userinfo (user, message) 
-        if message.lower().startswith('-vip') :
-            if user.username.lower() in self.moderators or user.username.lower() in self.membership :    
+        if message.lower().startswith('-mod') :
+           if user.username.lower() in self.moderators:    
               await self.highrise.teleport(f"{user.id}", Position(18.5, 18.75,0.5))
             else:
              await self.highrise.send_whisper((user.id)," this is a privet place for VIPs , uou can use it by purchaseing VIP Ticket type -buy")
-        if message.lower().startswith('-console') :
-           if user.username.lower() in self.moderators:    
-             await self.highrise.teleport(f"{user.id}", Position(15.5, 15.25,4.5))
-        if message.lower().startswith('-pc') :
+        if message.lower().startswith('-vip') :
+           if user.username.lower() in self.moderators or user.username.lower() in self.membership :  
+               await self.highrise.teleport(f"{user.id}", Position(15.5, 15.25,4.5))
+        if message.lower().startswith('-dj') :
             if user.username.lower() in self.moderators:    
               await self.highrise.teleport(f"{user.id}", Position(15,9.5,5.5))
         if message.lower().startswith('-bar') :
