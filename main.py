@@ -607,7 +607,7 @@ class Bot(BaseBot):
                await self.highrise.send_whisper(user.id,"\n  \n•Teleporting :\n ____________________________\n!vip @\n!dj @\n!pc  @\n!bar @\n!g @\nReact : thumb to summon.")
             
              
-        if message.lstrip().startswith(("!vip","!pc","!dj","!bar","!g")):
+        if message.lstrip().startswith(("!vip","!pc","!dj","!bar","!g","!mod")):
             response = await self.highrise.get_room_users()
             users = [content[0] for content in response.content]
             usernames = [user.username.lower() for user in users]
