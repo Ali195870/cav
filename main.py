@@ -602,9 +602,9 @@ class Bot(BaseBot):
                     await self.highrise.send_whisper(user.id,"Please share your feedback/suggestions with @x_softangel_x to improve our environment. Your contributions are valuable and will help us improve.")  
 
         if user.username.lower() in self.moderators:
-            if message.lower().lstrip().startswith(("-mod","!mod")):
+            if message.lower().lstrip().startswith(("-admin list","!admin list")):
                await self.highrise.send_whisper(user.id,"\n  \n•Moderating :\n ____________________________\n !kick @ \n !ban @ \n !mute @ \n !unmute @ ")
-               await self.highrise.send_whisper(user.id,"\n  \n•Teleporting :\n ____________________________\n!vip @\n!dj @\n!pc  @\n!bar @\n!g @\nReact : thumb to summon.")
+               await self.highrise.send_whisper(user.id,"\n  \n•Teleporting :\n ____________________________\n!vip @\n!dj @\n!pc @\n!mod @\n!bar @\n!g @\nReact : thumb to summon.")
             
              
         if message.lstrip().startswith(("!vip","!pc","!dj","!bar","!g","!mod")):
