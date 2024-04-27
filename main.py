@@ -669,11 +669,12 @@ class Bot(BaseBot):
         if message.lower().startswith('-mod') :
            if user.username.lower() in self.moderators:    
               await self.highrise.teleport(f"{user.id}", Position(18.5, 18.75,0.5))
-            else:
-             await self.highrise.send_whisper((user.id)," this is a privet place for VIPs , uou can use it by purchaseing VIP Ticket type -buy")
+            
         if message.lower().startswith('-vip') :
            if user.username.lower() in self.moderators or user.username.lower() in self.membership :  
                await self.highrise.teleport(f"{user.id}", Position(15.5, 15.25,4.5))
+           else:
+             await self.highrise.send_whisper((user.id)," this is a privet place for VIPs , uou can use it by purchaseing VIP Ticket type -buy")
         if message.lower().startswith('-dj') :
             if user.username.lower() in self.moderators:    
               await self.highrise.teleport(f"{user.id}", Position(15,9.5,5.5))
