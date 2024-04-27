@@ -801,6 +801,7 @@ class Bot(BaseBot):
 
   
     async def on_message(self, user_id: str, conversation_id: str, is_new_conversation: bool) -> None:
+      try:
         _bid = "f12287e3fe78370f402ddaa85cf846b80bef5c62663dfa635147be3ae32dbd36"
         _id = f"1_on_1:{_bid}:{user_id}"
         _idx = f"1_on_1:{user_id}:{_bid}"
@@ -933,6 +934,8 @@ class Bot(BaseBot):
                
               
             except Exception as e:
+             print(f"An exception occurred[Due To {parts[0][1:]}]: {e}")
+      except Exception as e:
              print(f"An exception occurred[Due To {parts[0][1:]}]: {e}")
     async def on_user_move(self, user: User, pos: Position | AnchorPosition) -> None:
       if user:
