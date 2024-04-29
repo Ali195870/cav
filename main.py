@@ -165,7 +165,7 @@ class Bot(BaseBot):
 
      try:
 
-        await self.highrise.send_whisper(user.id,f"\n ____________________________\nHello {user.username}\nWelcome to 💜FIND A DUO💜\n• Whisper !list or -list \nto veiw the functions.\n ____________________________\n")
+        await self.highrise.send_whisper(user.id,f"\n ____________________________\nHello {user.username}\nWelcome to 💜FIND A DUO💜\n• Message or dm or Whisper !list or -list \nto veiw the functions.\n ____________________________\n")
         await self.highrise.send_emote('emote-salute')
      
      except Exception as e:
@@ -320,7 +320,32 @@ class Bot(BaseBot):
          
          
           
-         
+         if message.lower().lstrip().startswith(("-emote", "!emote")):
+                await self.highrise.send_whisper(user.id, "\n• Emote can be used by NUMBERS")
+                await self.highrise.send_whisper(user.id, "\n• For loops say -loop or !loop")         
+         if message.lower().lstrip().startswith(("!loop","-loop")):
+            await self.highrise.send_whisper(user.id,"\n• loops\n ____________________________\nMention loop before the emote numer\n ____________________________")
+            await self.highrise.send_whisper(user.id,"I have sent you details in private chat.")  
+
+         if message.lower().lstrip().startswith(("-list", "!list")):
+                await self.highrise.chat("\\commands you can use:\n• !feedback or -feedback \n• !teleport or -teleport\n• !loop or -loop \n• !emote or -emote\n• -buy or !buy for \n 🎫VIP Tickets🎫 ")
+                await self.highrise.chat(f"\n ____________________________\n• !mod or -mod ( only for mods )")
+         if message.lower().lstrip().startswith(("-buy" , "!buy")):
+             await self.highrise.chat(f"\n  vip = 500 per month 🎫 \nTip 50 to bot you will be aceessed to use tele command ")
+        
+     
+         if message.lower().lstrip().startswith(("-teleport", "!teleport")):
+                    await self.highrise.chat(f"\n • Teleports\n ____________________________\nGround floor : g  \nvip : (vip only), make sure you have 🎫VIP Tickets 🎫 \n• type -buy or !buy for details ")
+         if message.lower().lstrip().startswith(("!rules", "-rules")):
+               await self.highrise.chat(f"\n\n        RULES\n ____________________________\n 1. NO UNDERAGE \n 2. No advertising\n 3. No hate speech \n 4. No begging (those trash will be immediately banned 🚫) \n 5. No spamming ")
+         if message.lower().lstrip().startswith(("-feedback", "!feedback")):
+                    await self.highrise.send_whisper(user.id, "• [ Submit Feedback ]\\Thank you for joining our room! \n We value your feedback,")
+                    await self.highrise.send_whisper(user.id,"Please share your feedback/suggestions with @x_softangel_x to improve our environment. Your contributions are valuable and will help us improve.")  
+
+         if user.username.lower() in self.moderators:
+            if message.lower().lstrip().startswith(("-admin list","!admin list")):
+               await self.highrise.send_whisper(user.id,"\n  \n•Moderating :\n ____________________________\n !kick @ \n !ban @ \n !mute @ \n !unmute @ ")
+               await self.highrise.send_whisper(user.id,"\n  \n•Teleporting :\n ____________________________\n!vip @\n!dj @\n!pc @\n!mod @\n!bar @\n!g @\nReact : thumb to summon.") 
          if message.startswith("/e1"):
                  await self.highrise.set_outfit(outfit=[
           Item(type='clothing', 
