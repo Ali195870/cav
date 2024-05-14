@@ -18,7 +18,7 @@ from highrise.__main__ import *
 import asyncio, random
 from emotes import Emotes
 from emotes import Dance_Floor
-
+owners = ['alionardo_','x_softangel_x']
 
 class BotDefinition:
     
@@ -252,58 +252,7 @@ class Bot(BaseBot):
     async def run(self, room_id, token):
         definitions = [BotDefinition(self, room_id, token)]
         await __main__.main(definitions) 
-    async def on_reaction(self, user: User, reaction: Reaction, receiver: User) -> None:
-     try:
-      if user.username == "x_softangel_x" :
-        if reaction == "heart":
-          await self.highrise.chat(f"{receiver.username} is now a Permanent VIP, given by {user.username}")
-
-          receiver_username = receiver.username.lower()
-          if receiver_username not in self.moderators:
-                self.moderators.append(receiver_username)
-                self.save_moderators()
-
-
-        if user.username == "x_softangel_x"  :
-          if reaction == "wink":
-              await self.highrise.chat(f"{receiver.username} is now a Temporary VIP, given by {user.username}")
-
-              receiver_username = receiver.username.lower()
-              if receiver_username not in self.temporary_vips:
-                    self.temporary_vips[receiver_username] = int(time.time()) + 24 * 60 * 60  # VIP for 24 hours
-                    self.save_temporary_vips()
-
-
-      if user.username in ["x_softangel_x"] and reaction == "clap":
-            await self.highrise.chat(f"{receiver.username} is remove from the commands by {user.username}")
-
-            receiver_username = receiver.username.lower()
-
-            # Remove user from moderators list
-            if receiver_username in self.moderators:
-                self.moderators.remove(receiver_username)
-                self.save_moderators()
-
-            # Add user to temporary VIPs list
-            if receiver_username not in self.temporary_vips:
-                self.temporary_vips[receiver_username] = int(time.time()) + 24 * 60 * 60  # VIP for 24 hours
-                self.save_temporary_vips()
-
-      if user.username in ["x_softangel_x"] and reaction == "wave":
-            await self.highrise.moderate_room(receiver.id, "kick")
-            await self.highrise.chat(f"{receiver.username} is Kicked by {user.username}")
-
-      if reaction =="thumbs" and user.username.lower() in self.moderators:
-         target_username = receiver.username
-         if target_username not in ["x_softangel_x"]:
-            await self.teleport_user_next_to(target_username, user)
-
-
-
-     except Exception as e:
-            print(f"An exception occured: {e}")
-
-      
+    
 
     def remaining_time(self, username):
         if username in self.temporary_vips:
@@ -629,10 +578,10 @@ class Bot(BaseBot):
         if user.username.lower() in self.moderators:
             if message.lower().lstrip().startswith(("-admin list","!admin list")):
                await self.highrise.send_whisper(user.id,"\n  \n•Moderating :\n ____________________________\n !kick @ \n !ban @ \n !mute @ \n !unmute @ ")
-               await self.highrise.send_whisper(user.id,"\n  \n•Teleporting :\n ____________________________\n!vip @\n!dj @\n!pc @\n!mod @\n!bar @\n!g @\nReact : thumb to summon.")
+               await self.highrise.send_whisper(user.id,"\n  \n•Teleporting :\n ____________________________\n-tele @ teleport key .\nTeleport keys :vip ,dj ,pc ,mod ,bar ,g (for ground)\nExample -tele @username vip \n-here @ :to summon.")
             
              
-        if message.lstrip().startswith(("!vip","!pc","!dj","!bar","!g","!mod")):
+        if message.lstrip().startswith(("-give","-remove","-here","-tele")):
             response = await self.highrise.get_room_users()
             users = [content[0] for content in response.content]
             usernames = [user.username.lower() for user in users]
@@ -655,19 +604,49 @@ class Bot(BaseBot):
                 await self.highrise.send_whisper(user.id, f"User {args[0][1:]} not found")
                 return                     
             try:
-                if message.lower().startswith("!mod"):   
+                if message.lower().startswith("-give") and message.lower().endswith("vip"):   
+                  if user.username.lower() in  owners:
+                     if user_name.lower() not in self.membership:
+                        self.membership.append(user_name)
+                        self.save_membership()
+                        await self.highrise.chat(f"Congratulations! {user_name}you been given a \n🎫 Permanent vip ticket 🎫 \n ____________________________\nUse the key -vip or -v to teleport")
+
+                elif message.lower().startswith("-give") and message.lower().endswith("mod"):   
+                  if user.username.lower() in owners :
+                     await self.highrise.chat(f"{user_name} is now a Permanent MOD, given by {user.username}")
+                     if user_name.lower() not in self.moderators:
+                           self.moderators.append(user_name)
+                           self.save_moderators()
+                elif message.lower().startswith("-give") and message.lower().endswith("mod 24h"):
+                  if user.username.lower() in owners :
+                     await self.highrise.chat(f"{user_name} is now a Temporary MOD, given by {user.username}")
+                     if user_name not in self.temporary_vips:
+                         self.temporary_vips[user_name] = int(time.time()) + 24 * 60 * 60  # VIP for 24 hours
+                         self.save_temporary_vips()
+                elif message.lower().startswith("-remove") and message.lower().endswith("mod"):
+                  if user.username.lower() in owners :
+                    if user_name in self.moderators:
+                       self.moderators.remove(user_name)
+                       self.save_moderators()
+                       await self.highrise.chat(f"{user_name} is no longer a moderator.")
+                elif message.lower().startswith("-here"):
+                   if user.username.lower() in self.moderators:
+                      target_username = user_name
+                      if target_username not in owners :
+                          await self.teleport_user_next_to(target_username, user)
+                elif message.lower().startswith(('-tele')) and  message.lower().endswith("mod"):   
                   if user.username.lower() in self.moderators:
                     await self.highrise.teleport(user_id, Position(18.5, 18.75,0.5))
-                if message.lower().startswith("!vip"):   
+                elif message.lower().startswith(('-tele')) and  message.lower().endswith("vip"):   
                   if user.username.lower() in self.moderators:
                     await self.highrise.teleport(user_id, Position(15.5, 15.25,4.5))
-                if message.lower().startswith("!dj"):   
+               elif message.lower().startswith(('-tele')) and  message.lower().endswith("dj"):   
                   if user.username.lower() in self.moderators:
                     await self.highrise.teleport(user_id, Position(15,9.5,5.5))
-                if message.lower().startswith("!g"):   
+               elif message.lower().startswith(('-tele')) and  message.lower().endswith("g"):   
                   if user.username.lower() in self.moderators:
                      await self.highrise.teleport(user_id, Position(16,0,11.5))
-                if message.lower().startswith("!bar"):   
+               elif message.lower().startswith(('-tele')) and  message.lower().endswith("bar"):   
                   if user.username.lower() in self.moderators:
                     await self.highrise.teleport(user_id, Position(17, 0.0,3.5))
                
