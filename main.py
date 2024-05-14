@@ -640,13 +640,13 @@ class Bot(BaseBot):
                 elif message.lower().startswith(('-tele')) and  message.lower().endswith("vip"):   
                   if user.username.lower() in self.moderators:
                     await self.highrise.teleport(user_id, Position(15.5, 15.25,4.5))
-               elif message.lower().startswith(('-tele')) and  message.lower().endswith("dj"):   
+                elif message.lower().startswith(('-tele')) and  message.lower().endswith("dj"):   
                   if user.username.lower() in self.moderators:
                     await self.highrise.teleport(user_id, Position(15,9.5,5.5))
-               elif message.lower().startswith(('-tele')) and  message.lower().endswith("g"):   
+                elif message.lower().startswith(('-tele')) and  message.lower().endswith("g"):   
                   if user.username.lower() in self.moderators:
                      await self.highrise.teleport(user_id, Position(16,0,11.5))
-               elif message.lower().startswith(('-tele')) and  message.lower().endswith("bar"):   
+                elif message.lower().startswith(('-tele')) and  message.lower().endswith("bar"):   
                   if user.username.lower() in self.moderators:
                     await self.highrise.teleport(user_id, Position(17, 0.0,3.5))
                
