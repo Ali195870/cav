@@ -165,7 +165,7 @@ class Bot(BaseBot):
 
      try:
 
-        await self.highrise.send_whisper(user.id,f"\n ____________________________\nHello {user.username}\nWelcome to 💜FIND A DUO💜\n• Message or dm or Whisper !list or -list \nto veiw the functions.\n ____________________________\n")
+        await self.highrise.send_whisper(user.id,f"\n ____________________________\nHello {user.username}\nWelcome to <#008000>FIND A DUO👾<#ffffff>\n• Message or dm or Whisper !list or -list \nto veiw the functions.\n ____________________________\n")
         await self.highrise.send_emote('emote-salute')
      
      except Exception as e:
@@ -336,6 +336,8 @@ class Bot(BaseBot):
                 elif message.lower().startswith(('-tele')) and  message.lower().endswith("bar"):   
                   if user.username.lower() in self.moderators:
                     await self.highrise.teleport(user_id, Position(17, 0.0,3.5))
+            except Exception as e:
+                print(f"{e}")
          if message.lower().lstrip().startswith(("-emote", "!emote")):
                 await self.highrise.send_whisper(user.id, "\n• Emote can be used by NUMBERS")
                 await self.highrise.send_whisper(user.id, "\n• For loops say -loop or !loop")         
