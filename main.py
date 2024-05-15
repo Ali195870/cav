@@ -268,7 +268,74 @@ class Bot(BaseBot):
          print(f"{user.username} said: {message}")     
          
          
-          
+         if message.lstrip().startswith(("-give","-remove","-here","-tele")):
+            response = await self.highrise.get_room_users()
+            users = [content[0] for content in response.content]
+            usernames = [user.username.lower() for user in users]
+            parts = message[1:].split()
+            args = parts[1:]
+
+            if len(args) < 1:
+                await self.highrise.send_whisper(user.id, f"Kullanım: !{parçalar[0]} <@Alionardo_>")
+                return
+            elif args[0][0] != "@":
+                await self.highrise.send_whisper(user.id, "Invalid user format. Please use '@username'.")
+                return
+            elif args[0][1:].lower() not in usernames:
+                await self.highrise.send_whisper(user.id, f"{args[0][1:]} is not in the room.")
+                return
+
+            user_id = next((u.id for u in users if u.username.lower() == args[0][1:].lower()), None)
+            user_name = next((u.username.lower() for u in users if u.username.lower() == args[0][1:].lower()), None)
+            if not user_id:
+                await self.highrise.send_whisper(user.id, f"User {args[0][1:]} not found")
+                return                     
+            try:
+                if message.lower().startswith("-give") and message.lower().endswith("vip"):   
+                  if user.username.lower() in  owners:
+                     if user_name.lower() not in self.membership:
+                        self.membership.append(user_name)
+                        self.save_membership()
+                        await self.highrise.chat(f"Congratulations! {user_name}you been given a \n🎫 Permanent vip ticket 🎫 \n ____________________________\nUse the key -vip or -v to teleport")
+
+                elif message.lower().startswith("-give") and message.lower().endswith("mod"):   
+                  if user.username.lower() in owners :
+                     await self.highrise.chat(f"{user_name} is now a Permanent MOD, given by {user.username}")
+                     if user_name.lower() not in self.moderators:
+                           self.moderators.append(user_name)
+                           self.save_moderators()
+                elif message.lower().startswith("-give") and message.lower().endswith("mod 24h"):
+                  if user.username.lower() in owners :
+                     await self.highrise.chat(f"{user_name} is now a Temporary MOD, given by {user.username}")
+                     if user_name not in self.temporary_vips:
+                         self.temporary_vips[user_name] = int(time.time()) + 24 * 60 * 60  # VIP for 24 hours
+                         self.save_temporary_vips()
+                elif message.lower().startswith("-remove") and message.lower().endswith("mod"):
+                  if user.username.lower() in owners :
+                    if user_name in self.moderators:
+                       self.moderators.remove(user_name)
+                       self.save_moderators()
+                       await self.highrise.chat(f"{user_name} is no longer a moderator.")
+                elif message.lower().startswith("-here"):
+                   if user.username.lower() in self.moderators:
+                      target_username = user_name
+                      if target_username not in owners :
+                          await self.teleport_user_next_to(target_username, user)
+                elif message.lower().startswith(('-tele')) and  message.lower().endswith("mod"):   
+                  if user.username.lower() in self.moderators:
+                    await self.highrise.teleport(user_id, Position(18.5, 18.75,0.5))
+                elif message.lower().startswith(('-tele')) and  message.lower().endswith("vip"):   
+                  if user.username.lower() in self.moderators:
+                    await self.highrise.teleport(user_id, Position(15.5, 15.25,4.5))
+                elif message.lower().startswith(('-tele')) and  message.lower().endswith("dj"):   
+                  if user.username.lower() in self.moderators:
+                    await self.highrise.teleport(user_id, Position(15,9.5,5.5))
+                elif message.lower().startswith(('-tele')) and  message.lower().endswith("g"):   
+                  if user.username.lower() in self.moderators:
+                     await self.highrise.teleport(user_id, Position(16,0,11.5))
+                elif message.lower().startswith(('-tele')) and  message.lower().endswith("bar"):   
+                  if user.username.lower() in self.moderators:
+                    await self.highrise.teleport(user_id, Position(17, 0.0,3.5))
          if message.lower().lstrip().startswith(("-emote", "!emote")):
                 await self.highrise.send_whisper(user.id, "\n• Emote can be used by NUMBERS")
                 await self.highrise.send_whisper(user.id, "\n• For loops say -loop or !loop")         
@@ -294,7 +361,7 @@ class Bot(BaseBot):
          if user.username.lower() in self.moderators:
             if message.lower().lstrip().startswith(("-admin list","!admin list")):
                await self.highrise.send_whisper(user.id,"\n  \n•Moderating :\n ____________________________\n !kick @ \n !ban @ \n !mute @ \n !unmute @ ")
-               await self.highrise.send_whisper(user.id,"\n  \n•Teleporting :\n ____________________________\n!vip @\n!dj @\n!pc @\n!mod @\n!bar @\n!g @\nReact : thumb to summon.") 
+               await self.highrise.send_whisper(user.id,"\n  \n•Teleporting :\n ____________________________\n-tele @ teleport key .\nTeleport keys :\nvip ,dj ,pc ,mod ,bar ,g (for ground)\nExample -tele @username vip \n-here @ :to summon.") 
          if message.startswith("/e1"):
                  await self.highrise.set_outfit(outfit=[
           Item(type='clothing', 
@@ -578,7 +645,7 @@ class Bot(BaseBot):
         if user.username.lower() in self.moderators:
             if message.lower().lstrip().startswith(("-admin list","!admin list")):
                await self.highrise.send_whisper(user.id,"\n  \n•Moderating :\n ____________________________\n !kick @ \n !ban @ \n !mute @ \n !unmute @ ")
-               await self.highrise.send_whisper(user.id,"\n  \n•Teleporting :\n ____________________________\n-tele @ teleport key .\nTeleport keys :vip ,dj ,pc ,mod ,bar ,g (for ground)\nExample -tele @username vip \n-here @ :to summon.")
+               await self.highrise.send_whisper(user.id,"\n  \n•Teleporting :\n ____________________________\n-tele @ teleport key .\nTeleport keys :\nvip ,dj ,pc ,mod ,bar ,g (for ground)\nExample -tele @username vip \n-here @ :to summon.")
             
              
         if message.lstrip().startswith(("-give","-remove","-here","-tele")):
