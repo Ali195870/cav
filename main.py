@@ -13,9 +13,6 @@ import re
 from highrise.models import SessionMetadata, User, Item, Position, CurrencyItem, Reaction
 
 import openai
-import torch
-from transformers import AutoModelForSequenceClassification, AutoTokenizer
-
 model_name = "distilgpt2"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForSequenceClassification.from_pretrained(model_name)
