@@ -5,4 +5,4 @@ transformers
 torch
 torchvision
 torchaudio
-typing-extensions
+typing-extensions>=4.3.0
