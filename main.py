@@ -15,7 +15,7 @@ from highrise.models import SessionMetadata, User, Item, Position, CurrencyItem,
 from webserver import keep_alive
 import openai
 
-openai.api_key = "YOUR_API_KEY_HERE"
+openai.api_key = os.environ["OPENAI_API_KEY"]
 
 class BotDefinition:
     def __init__(self, bot, room_id, api_token):
