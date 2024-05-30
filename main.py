@@ -13,10 +13,12 @@ import re
 from highrise.models import SessionMetadata, User, Item, Position, CurrencyItem, Reaction
 
 from webserver import keep_alive
-from rasa_sdk import Tracker, Action, FormAction
-from rasa_sdk.executor import ActionExecutor
-from rasa_sdk.interfaces import ActionInterface
+import torch
+from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
+model_name = "distilgpt2"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModelForSequenceClassification.from_pretrained(model_name)
 class BotDefinition:
     def __init__(self, bot, room_id, api_token):
         self.bot = bot
@@ -39,13 +41,27 @@ class Bot(BaseBot):
         self.maze_players = {}
         self.user_points = {}  # Dictionary to store user points
         self.rasa_executor = ActionExecutor()
+    def respond(self, user_input):
+        # Tokenize the user input
+        inputs = self.tokenizer.encode_plus(
+            user_input,
+            add_special_tokens=True,
+            max_length=512,
+            return_attention_mask=True,
+            return_tensors='pt'
+        )
 
+        # Generate a response using the GPT model
+        outputs = self.model(inputs['input_ids'], attention_mask=inputs['attention_mask'])
+        response = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
+
+        return response
     
     async def on_chat(self, user: User, message: str) -> None :
         print(f"{user.username} said: {message}")
         if user.username!= self.bot.username:
-            tracker = Tracker(user.username, message)
-            response = self.rasa_executor.run(tracker)
+            chatbot = Chatbot(model, tokenizer)
+            response = chatbot.respond(message)
             await self.highrise.chat(response)
     
 
