@@ -125,7 +125,7 @@ class Bot(BaseBot):
 
 keep_alive()
 if __name__ == "__main__":
-    room_id = "652d73cab97bc7ba34db1e24"
-    token = "e79a0f2743b61d00b58e3e72baeb947eef234e3245124bfead98efd694c3e154"
+    room_id = "65973a6c5ae45c9ac1b5b7ed"
+    token = "d4f4d0097df559e6e4a02a27f7567db9f77e83b8f4b212acaef06ac9cdcb67b9"
     arun(Bot().run(room_id, token))
 
