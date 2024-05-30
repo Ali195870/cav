@@ -13,9 +13,6 @@ import re
 from highrise.models import SessionMetadata, User, Item, Position, CurrencyItem, Reaction
 
 import openai
-model_name = "distilgpt2"
-tokenizer = AutoTokenizer.from_pretrained(model_name)
-model = AutoModelForSequenceClassification.from_pretrained(model_name)
 
 openai.api_key = "YOUR_API_KEY_HERE"
 
