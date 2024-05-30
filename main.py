@@ -51,7 +51,7 @@ class Bot(BaseBot):
 
         # Send a request to the OpenAI API
         response = openai.Completion.create(
-            engine="text-davinci-002",
+            engine="gpt-3.5-turbo",
             prompt=prompt,
             temperature=0.5,
             max_tokens=100,
