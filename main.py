@@ -7,7 +7,6 @@ from asyncio import run as arun
 import asyncio
 from random import choice
 import json
-from typing import List
 from datetime import datetime, timedelta
 from highrise.models import SessionMetadata
 import re
