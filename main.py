@@ -51,7 +51,7 @@ class Bot(BaseBot):
 
         # Send a request to the OpenAI API
         response = openai.Completion.create(
-            engine="text-davinci-003",
+            engine="text-davinci-002",
             prompt=prompt,
             temperature=0.5,
             max_tokens=100,
@@ -67,7 +67,6 @@ class Bot(BaseBot):
     async def run(self, room_id, token):
         definitions = [BotDefinition(self, room_id, token)]
         await __main__.main(definitions)
-
 
 keep_alive()
 if __name__ == "__main__":
