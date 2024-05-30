@@ -37,7 +37,7 @@ class Bot(BaseBot):
         super().__init__()
         self.maze_players = {}
         self.user_points = {}  # Dictionary to store user points
-        self.rasa_executor = ActionExecutor()
+      
 
     async def on_chat(self, user: User, message: str) -> None :
         print(f"{user.username} said: {message}")
