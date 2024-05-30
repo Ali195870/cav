@@ -50,20 +50,8 @@ class Bot(BaseBot):
             print(f"Error generating response: {e}")
 
     async def generate_response(self, user_input: str) -> str:
-        if user_input in self.cache:
-            return self.cache[user_input]
-
-        # Check if the rate limit has been exceeded
-        if self.rate_limit_reset_time is not None and datetime.now() < self.rate_limit_reset_time:
-            # Wait until the rate limit resets
-            wait_time = (self.rate_limit_reset_time - datetime.now()).total_seconds()
-            await asyncio.sleep(wait_time)
-
-        # Define the prompt for the OpenAI API
         prompt = f"{user_input}\n\nAI:"
-
         try:
-            # Send a request to the OpenAI API
             response = openai.Completion.create(
                 engine="gpt-3.5-turbo",
                 prompt=prompt,
@@ -73,24 +61,14 @@ class Bot(BaseBot):
                 frequency_penalty=0,
                 presence_penalty=0
             )
-
-            # Cache the response
-            self.cache[user_input] = response.choices[0].text
-
-            # Update the rate limit reset time
-            self.rate_limit_reset_time = datetime.now() + timedelta(seconds=60)  # Set the rate limit to 1 request per minute
-
-            # Return the generated response
-            return self.cache[user_input]
+            return response.choices[0].text
         except openai.error.RateLimitError as e:
             print(f"Rate limit exceeded: {e}")
-            self.rate_limit_reset_time = datetime.now() + timedelta(seconds=60)  # Set the rate limit to 1 request per minute
             await asyncio.sleep(60)  # Wait for 1 minute before retrying
             return await self.generate_response(user_input)
         except Exception as e:
             print(f"Error generating response: {e}")
             return "Error generating response"
-
     async def run(self, room_id, token):
         definitions = [BotDefinition(self, room_id, token)]
         await __main__.main(definitions)
