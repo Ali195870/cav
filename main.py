@@ -63,9 +63,12 @@ class Bot(BaseBot):
         # Return the generated response
         return response.choices[0].text
 
+    
+    async def run(self, room_id, token):
+        definitions = [BotDefinition(self, room_id, token)]
+        await __main__.main(definitions)
 
-# Set the OpenAI API key as an environment variable
-os.environ["OPENAI_API_KEY"] = openai.api_key
 
-# Run the bot
-arun(Bot().run("65973a6c5ae45c9ac1b5b7ed", "d4f4d0097df559e6e4a02a27f7567db9f77e83b8f4b212acaef06ac9cdcb67b9"))
+keep_alive()
+if __name__ == "__main__":
+   arun(Bot().run("65973a6c5ae45c9ac1b5b7ed", "d4f4d0097df559e6e4a02a27f7567db9f77e83b8f4b212acaef06ac9cdcb67b9"))
