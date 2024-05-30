@@ -42,7 +42,7 @@ class Bot(BaseBot):
 
     async def on_chat(self, user: User, message: str) -> None :
         print(f"{user.username} said: {message}")
-        if user.username!= self.bot.username:
+        if message.lower.startswith("louis"):
             response = await self.generate_response(message)
             await self.highrise.chat(response)
 
