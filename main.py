@@ -34,6 +34,7 @@ class Bot(BaseBot):
     cooldowns = {}  # Class-level variable to store cooldown timestamps
     emote_looping = False
     cache = {}
+    rate_limit_reset_time = None 
     def __init__(self):
         super().__init__()
         self.maze_players = {}
@@ -41,18 +42,19 @@ class Bot(BaseBot):
       
 
     async def on_chat(self, user: User, message: str) -> None :
-            print(f"{user.username} said: {message}")
-            response = await self.generate_response(message)
-            await self.highrise.chat(response)
-
-    async def on_chat(self, user: User, message: str) -> None :
-            print(f"{user.username} said: {message}")
-            response = await self.generate_response(message)
-            await self.highrise.chat(response)
+        print(f"{user.username} said: {message}")
+        response = await self.generate_response(message)
+        await self.highrise.chat(response)
 
     async def generate_response(self, user_input):
         if user_input in self.cache:
             return self.cache[user_input]
+
+        # Check if the rate limit has been exceeded
+        if self.rate_limit_reset_time is None or datetime.now() < self.rate_limit_reset_time:
+            # Wait until the rate limit resets
+            wait_time = (self.rate_limit_reset_time - datetime.now()).total_seconds()
+            await asyncio.sleep(wait_time)
 
         # Define the prompt for the OpenAI API
         prompt = f"{user_input}\n\nAI:"
@@ -70,6 +72,9 @@ class Bot(BaseBot):
 
         # Cache the response
         self.cache[user_input] = response.choices[0].text
+
+        # Update the rate limit reset time
+        self.rate_limit_reset_time = datetime.now() + timedelta(seconds=60)  # Set the rate limit to 1 request per minute
 
         # Return the generated response
         return self.cache[user_input]
