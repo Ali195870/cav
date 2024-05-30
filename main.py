@@ -12,6 +12,7 @@ from highrise.models import SessionMetadata
 import re
 from highrise.models import SessionMetadata, User, Item, Position, CurrencyItem, Reaction
 
+from webserver import keep_alive
 import openai
 
 openai.api_key = "YOUR_API_KEY_HERE"
