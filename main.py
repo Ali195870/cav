@@ -22,7 +22,7 @@ class BotDefinition:
         self.bot = bot
         self.room_id = room_id
         self.api_token = api_token
-        
+           
 
 class Counter:
     bot_id = ""
@@ -33,7 +33,7 @@ class Counter:
 class Bot(BaseBot):
     cooldowns = {}  # Class-level variable to store cooldown timestamps
     emote_looping = False
-
+    cache = {}
     def __init__(self):
         super().__init__()
         self.maze_players = {}
@@ -45,7 +45,15 @@ class Bot(BaseBot):
             response = await self.generate_response(message)
             await self.highrise.chat(response)
 
+    async def on_chat(self, user: User, message: str) -> None :
+            print(f"{user.username} said: {message}")
+            response = await self.generate_response(message)
+            await self.highrise.chat(response)
+
     async def generate_response(self, user_input):
+        if user_input in self.cache:
+            return self.cache[user_input]
+
         # Define the prompt for the OpenAI API
         prompt = f"{user_input}\n\nAI:"
 
@@ -60,9 +68,15 @@ class Bot(BaseBot):
             presence_penalty=0
         )
 
-        # Return the generated response
-        return response.choices[0].text
+        # Cache the response
+        self.cache[user_input] = response.choices[0].text
 
+        # Return the generated response
+        return self.cache[user_input]
+    
+    async def run(self, room_id, token):
+        definitions = [BotDefinition(self, room_id, token)]
+        await __main__.main(definitions)
     
     async def run(self, room_id, token):
         definitions = [BotDefinition(self, room_id, token)]
