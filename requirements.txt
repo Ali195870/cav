@@ -1,13 +1,4 @@
 Flask
 highrise-bot-sdk==23.3.4
 requests
-transformers
-torch<2.2.0,>=2.1.2
-torchvision
-torchaudio
-typing-extensions>=4.3.0  # upgrade to latest version
-aiohttp>=3.8.4
-cattrs==22.2.0
-click>=8.1.3
-pendulum<3.0.0,>=2.1.2
-quattro<23.0.0,>=22.1.0
+openai
