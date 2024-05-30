@@ -13,10 +13,8 @@ import re
 from highrise.models import SessionMetadata, User, Item, Position, CurrencyItem, Reaction
 
 from webserver import keep_alive
-import torch
-from transformers import AutoModelForSequenceClassification, AutoTokenizer
-
-
+from chatterbot import ChatBot
+from chatterbot.trainers import ChatterBotCorpusTrainer
 class BotDefinition:
     def __init__(self, bot, room_id, api_token):
         self.bot = bot
@@ -38,34 +36,16 @@ class Bot(BaseBot):
         super().__init__()
         self.maze_players = {}
         self.user_points = {}  # Dictionary to store user points
-    
+        self.chatbot = ChatBot("GooshieBot")
+        self.trainer = ChatterBotCorpusTrainer(self.chatbot)
+        self.trainer.train("chatterbot.corpus.english")  # Train the chatbot with a corpus of English phrases
+
     
     async def on_chat(self, user: User, message: str) -> None :
         print(f"{user.username} said: {message}")
         if user.username!= self.bot.username:
-            # Load the pre-trained model and tokenizer
-            model = AutoModelForSequenceClassification.from_pretrained("distilbert-base-uncased")
-            tokenizer = AutoTokenizer.from_pretrained("distilbert-base-uncased")
-
-            # Preprocess the input message
-            inputs = tokenizer.encode_plus(
-                message,
-                add_special_tokens=True,
-                max_length=512,
-                return_attention_mask=True,
-                return_tensors='pt'
-            )
-
-            # Generate a response using the model
-            outputs = model(inputs['input_ids'], attention_mask=inputs['attention_mask'])
-            response = torch.argmax(outputs.logits)
-
-            # Convert the response to a string
-            response_text = tokenizer.decode(response, skip_special_tokens=True)
-
-            # Send the response back to the room
-            await self.highrise.chat(response_text)
-      
+            response = self.chatbot.get_response(message)
+            await self.highrise.chat(response)
 
     
 
