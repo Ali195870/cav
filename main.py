@@ -22,7 +22,7 @@ class BotDefinition:
         self.bot = bot
         self.room_id = room_id
         self.api_token = api_token
-           
+        openai.api_key = os.environ["OPENAI_API_KEY"]  
 
 class Counter:
     bot_id = ""
