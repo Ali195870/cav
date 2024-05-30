@@ -34,7 +34,7 @@ class Bot(BaseBot):
     cooldowns = {}  # Class-level variable to store cooldown timestamps
     emote_looping = False
     cache = {}
-    rate_limit_reset_time = None 
+    rate_limit_reset_time = datetime.now()
     def __init__(self):
         super().__init__()
         self.maze_players = {}
