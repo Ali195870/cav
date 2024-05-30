@@ -13,8 +13,10 @@ import re
 from highrise.models import SessionMetadata, User, Item, Position, CurrencyItem, Reaction
 
 from webserver import keep_alive
-from chatterbot import ChatBot
-from chatterbot.trainers import ChatterBotCorpusTrainer
+from rasa_sdk import Tracker, Action, FormAction
+from rasa_sdk.executor import ActionExecutor
+from rasa_sdk.interfaces import ActionInterface
+
 class BotDefinition:
     def __init__(self, bot, room_id, api_token):
         self.bot = bot
@@ -36,17 +38,15 @@ class Bot(BaseBot):
         super().__init__()
         self.maze_players = {}
         self.user_points = {}  # Dictionary to store user points
-        self.chatbot = ChatBot("GooshieBot")
-        self.trainer = ChatterBotCorpusTrainer(self.chatbot)
-        self.trainer.train("chatterbot.corpus.english")  # Train the chatbot with a corpus of English phrases
+        self.rasa_executor = ActionExecutor()
 
     
     async def on_chat(self, user: User, message: str) -> None :
         print(f"{user.username} said: {message}")
         if user.username!= self.bot.username:
-            response = self.chatbot.get_response(message)
+            tracker = Tracker(user.username, message)
+            response = self.rasa_executor.run(tracker)
             await self.highrise.chat(response)
-
     
 
 
