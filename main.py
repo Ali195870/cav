@@ -44,8 +44,6 @@ class Bot(BaseBot):
       # You will need to replace 'your-openai-api-key' with your actual API key
       openai_api_key = os.environ["OPENAI_API_KEY"]
       openai_model = "gpt-3.5-turbo"
-
-      openai_client = openai.Client(api_key=openai_api_key)
       os.environ["OPENAI_API_KEY"] = openai_api_key
 
       response = openai.Completion.create(
