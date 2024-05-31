@@ -56,10 +56,6 @@ class Bot(BaseBot):
         stop=None,
         temperature=0.5,
       )
-
-    return response.choices[0].text.strip()
-       
-
       return response.choices[0].text.strip()
     async def on_chat(self, user: User, message: str) -> None:
         print(f"{user.username} said: {message}")
