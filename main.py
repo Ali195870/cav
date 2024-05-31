@@ -46,8 +46,9 @@ class Bot(BaseBot):
       openai_model = "gpt-3.5-turbo"
 
       openai_client = openai.Client(api_key=openai_api_key)
+      os.environ["OPENAI_API_KEY"] = openai_api_key
 
-      response = openai_client.completion.create(
+      response = openai.Completion.create(
         engine=openai_model,
         prompt=message,
         max_tokens=60,
@@ -55,6 +56,9 @@ class Bot(BaseBot):
         stop=None,
         temperature=0.5,
       )
+
+    return response.choices[0].text.strip()
+       
 
       return response.choices[0].text.strip()
     async def on_chat(self, user: User, message: str) -> None:
