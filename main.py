@@ -62,6 +62,11 @@ class Bot(BaseBot):
         if message.lower().startswith("hey"):
          response = await self.openai_response(message)
          await self.highrise.chat(response)
+            
+    async def run(self, room_id, token):
+        definitions = [BotDefinition(self, room_id, token)]
+        await __main__.main(definitions)
+
 
 keep_alive()
 if __name__ == "__main__":
