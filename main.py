@@ -40,38 +40,28 @@ class Bot(BaseBot):
         self.maze_players = {}
         self.user_points = {}  # Dictionary to store user points
       
+    async def openai_response(self, message):
+      # You will need to replace 'your-openai-api-key' with your actual API key
+      openai_api_key = os.environ["OPENAI_API_KEY"]
+      openai_model = "gpt-3.5-turbo"
 
+      openai_client = openai.Client(api_key=openai_api_key)
+
+      response = openai_client.completion.create(
+        engine=openai_model,
+        prompt=message,
+        max_tokens=60,
+        n=1,
+        stop=None,
+        temperature=0.5,
+      )
+
+      return response.choices[0].text.strip()
     async def on_chat(self, user: User, message: str) -> None:
         print(f"{user.username} said: {message}")
-        try:
-            response = await self.generate_response(message)
-            await self.highrise.chat(response)
-        except Exception as e:
-            print(f"Error generating response: {e}")
-
-    async def generate_response(self, user_input: str) -> str:
-        prompt = f"{user_input}\n\nAI:"
-        try:
-            response = openai.Completion.create(
-                engine="gpt-3.5-turbo",
-                prompt=prompt,
-                temperature=0.5,
-                max_tokens=100,
-                top_p=1,
-                frequency_penalty=0,
-                presence_penalty=0
-            )
-            return response.choices[0].text
-        except openai.error.RateLimitError as e:
-            print(f"Rate limit exceeded: {e}")
-            await asyncio.sleep(60)  # Wait for 1 minute before retrying
-            return await self.generate_response(user_input)
-        except Exception as e:
-            print(f"Error generating response: {e}")
-            return "Error generating response"
-    async def run(self, room_id, token):
-        definitions = [BotDefinition(self, room_id, token)]
-        await __main__.main(definitions)
+        if message.lower().startswith("hey"):
+         response = await self.openai_response(message)
+         await self.highrise.chat(response)
 
 keep_alive()
 if __name__ == "__main__":
