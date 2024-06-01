@@ -41,18 +41,12 @@ class Bot(BaseBot):
         self.user_points = {}  # Dictionary to store user points
       
     async def openai_response(self, message):
-      # You will need to replace 'your-openai-api-key' with your actual API key
-      openai_api_key = os.environ["OPENAI_API_KEY"]
+      openai.api_key = os.environ["OPENAI_API_KEY"]
       openai_model = "gpt-3.5-turbo"
-      os.environ["OPENAI_API_KEY"] = openai_api_key
-
-      response = openai.Completion.create(
+      response = openai.ChatCompletion.create(
         engine=openai_model,
         prompt=message,
-        max_tokens=60,
-        n=1,
-        stop=None,
-        temperature=0.5,
+        messages = [{"role": "user","content":prompt}]
       )
       return response.choices[0].text.strip()
     async def on_chat(self, user: User, message: str) -> None:
