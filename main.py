@@ -41,19 +41,20 @@ class Bot(BaseBot):
         self.user_points = {}  # Dictionary to store user points
       
     async def openai_response(self, message):
-      openai.api_key = os.environ["OPENAI_API_KEY"]
-      openai_model = "gpt-3.5-turbo"
-      response = openai.ChatCompletion.create(
-        engine=openai_model,
-        prompt=message,
-        messages = [{"role": "user","content":prompt}]
-      )
-      return response.choices[0].text.strip()
+        openai.api_key = os.environ["OPENAI_API_KEY"]
+        openai_model = "gpt-3.5-turbo"
+        prompt = message  # Define the prompt variable
+        response = openai.ChatCompletion.create(
+            engine=openai_model,
+            messages=[{"role": "user", "content": prompt}]
+        )
+        return response.choices[0].message.content.strip()
+
     async def on_chat(self, user: User, message: str) -> None:
         print(f"{user.username} said: {message}")
         if message.lower().startswith("hey"):
-         response = await self.openai_response(message)
-         await self.highrise.chat(response)
+            response = await self.openai_response(message)
+            await self.highrise.chat(response)
             
     async def run(self, room_id, token):
         definitions = [BotDefinition(self, room_id, token)]
